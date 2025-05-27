@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Concursos CPH</title>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo&display=swap" rel="stylesheet">
+  <link rel="icon" href="icono2.png" type="image/png">
+  <style>
+    body {
+      font-family: 'Archivo', sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+    }
+
+    .encabezado {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background-color: #153244;
+      color: white;
+      padding: 10px 20px;
+    }
+
+    .texto {
+      padding: 30px 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .texto p {
+      font-size: 1.2rem;
+      color: #153244;
+      margin-bottom: 20px;
+    }
+
+    #confirmarBtn {
+      background-color: #153244;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    #confirmarBtn:hover {
+      background-color: #0f2435;
+    }
+
+    .tablero {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+
+    .boton-opcion {
+      background-color: #153244;
+      color: white;
+      padding: 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      height: 150px;
+      width: 240px;
+      cursor: pointer;
+      text-align: center;
+      transition: transform 0.2s ease, background-color 0.3s ease;
+    }
+
+    .boton-opcion:hover {
+      background-color: #0f2435;
+      transform: scale(1.05);
+    }
+    .tarjeta {
+    display: flex;
+    border: 2px solid #ccc;
+    padding: 16px;
+    margin: 20px auto;
+    border-radius: 8px;
+    background-color: #ffffff;
+    max-width: 300px;
+    height: 300px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .tarjeta.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+ /* Botón "Llamar a concurso" */
+  #llamarBtn {
+    display: block;
+    margin: 130px auto 0 auto;
+    background-color: #153244;
+    color: white;
+    border: none;
+    padding: 12px 35px;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  #llamarBtn:hover {
+    background-color: #0f2435;
+  }
+  </style>
+</head>
+
+<body>
+  <div class="encabezado">
+    <img src="logo3.png" width="150" height="110" />
+    <h1>Plataforma para concursos</h1>
+  </div>
+
+  <div class="texto">
+    <p id="mensaje-bienvenida"></p>
+  </div>
+
+  <!-- Botonera / Tablero de opciones -->
+  <div class="tablero">
+    <button class="boton-opcion" onclick="seleccionarOpcion('Psicólogo')">Psicólogo</button>
+    <button class="boton-opcion" onclick="seleccionarOpcion('Administrativo')">Administrativo</button>
+    <button class="boton-opcion" onclick="seleccionarOpcion('Mantenimiento')">Mantenimiento</button>
+    <button class="boton-opcion" onclick="seleccionarOpcion('Técnico de laboratorio')">Técnico de laboratorio</button>
+    <button class="boton-opcion" onclick="seleccionarOpcion('Bioquímico')">Bioquímico</button>
+    <button class="boton-opcion" onclick="seleccionarOpcion('Médico clínico')">Médico clínico</button>
+  </div>
+  <!-- Tarjeta de información del cargo -->
+  <div id="tarjeta-info" class="tarjeta" style="display: none;">
+    <h2 id="titulo-cargo"></h2>
+    <p id="descripcion-cargo"></p>
+    <p id="regimen-cargo"></p>
+    <button id="llamarBtn">Llamar a concurso</button>
+  </div>
+
+  <script>
+  const efector = localStorage.getItem('efectorSeleccionado') || 'su efector';
+
+  // Insertar el mensaje dinámicamente
+  document.getElementById('mensaje-bienvenida').textContent = `Bienvenido/a al ${efector}, estas son las vacantes disponibles para llamar a concurso:`;
+  const datosCargos = {
+    "Psicólogo": {
+      titulo: "Psicólogo",
+      descripcion: "Profesional no médico",
+      regimen: "No Guardia"
+    },
+    "Administrativo": {
+      titulo: "Administrativo",
+      descripcion: "Profesional no médico",
+      regimen: "No Guardia"
+    },
+    "Mantenimiento": {
+      titulo: "Mantenimiento",
+      descripcion: "Profesional no médico",
+      regimen: "No Guardia"
+    },
+    "Técnico de laboratorio": {
+      titulo: "Técnico de laboratorio",
+      descripcion: "Profesional no médico",
+      regimen: "No Guardia"
+    },
+    "Bioquímico": {
+      titulo: "Bioquímico",
+      descripcion: "Profesional no médico",
+      regimen: "Guardia"
+    },
+    "Médico clínico": {
+      titulo: "Médico clínico",
+      descripcion: "Profesional médico",
+      regimen: "No Guardia"
+    }
+  };
+
+  let cargoActual = null;
+
+  function seleccionarOpcion(cargo) {
+  const tarjeta = document.getElementById("tarjeta-info");
+
+  if (cargo === cargoActual && tarjeta.style.display === "block") {
+    tarjeta.classList.remove("visible");
+    setTimeout(() => {
+      tarjeta.style.display = "none";
+    }, 300);
+    cargoActual = null;
+  } else {
+    const info = datosCargos[cargo];
+    document.getElementById("titulo-cargo").textContent = info.titulo;
+    document.getElementById("descripcion-cargo").textContent = info.descripcion;
+    document.getElementById("regimen-cargo").textContent = info.regimen;
+    tarjeta.style.display = "block";
+    setTimeout(() => {
+      tarjeta.classList.add("visible");
+    }, 10);
+    cargoActual = cargo;
+  }
+}
+
+  </script>
+  <script>
+  document.addEventListener("click", function(event) {
+    const tarjeta = document.getElementById("tarjeta-info");
+
+    // Si la tarjeta está visible y se hace clic fuera de ella
+    if (tarjeta.style.display === "block" && !tarjeta.contains(event.target) && !event.target.classList.contains("boton-opcion")) {
+      tarjeta.classList.remove("visible");
+      setTimeout(() => {
+        tarjeta.style.display = "none";
+      }, 300);
+      cargoActual = null;
+    }
+  });
+</script>
+
+
+</body>
+
+</html>

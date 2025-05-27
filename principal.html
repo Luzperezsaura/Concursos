@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Concursos CPH</title>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo&display=swap" rel="stylesheet">
+  <link rel="icon" href="icono2.png" type="image/png">
+  <style>
+    body {
+      font-family: 'Archivo', sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+    }
+
+    .encabezado {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background-color: #153244;
+      color: white;
+      padding: 10px 20px;
+    }
+
+    .selector-efector {
+      max-width: 400px;
+      background: white;
+      margin: 30px auto;
+      padding: 20px 25px;
+      border-radius: 8px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .selector-efector p {
+      font-weight: 600;
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+      color: #153244;
+    }
+
+    .selector-efector select {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+    }
+
+    .selector-efector button {
+      background-color: #153244;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .selector-efector button:hover {
+      background-color: #0f2435;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="encabezado">
+    <img src="logo3.png" width="150" height="110" />
+    <h1>Plataforma para concursos CPH</h1>
+  </div>
+
+  <div class="selector-efector">
+    <p>Elija el efector desde el que está operando</p>
+    <select id="efectorSelect" required>
+      <option value="" disabled selected>-- Seleccione una opción --</option>
+      <option value="Hospital Gutierrez">Hospital Gutierrez</option>
+      <option value="Hospital Álvarez">Hospital Álvarez</option>
+      <option value="Hospital Piñero">Hospital Piñero</option>
+      <option value="Hospital Ferrer">Hospital Ferrer</option>
+    </select>
+    <button id="confirmarBtn">Confirmar</button>
+  </div>
+
+  <script>
+    const btnConfirmar = document.getElementById('confirmarBtn');
+    const selectEfector = document.getElementById('efectorSelect');
+
+    btnConfirmar.addEventListener('click', () => {
+      const seleccionado = selectEfector.value;
+
+      if (!seleccionado) {
+        alert('Por favor, seleccione un efector antes de continuar.');
+        return;
+      }
+      localStorage.setItem('efectorSeleccionado', seleccionado);
+      window.location.href = 'hospital.html';
+    });
+  </script>
+</body>
+
+</html>
